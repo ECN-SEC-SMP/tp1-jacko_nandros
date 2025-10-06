@@ -1,17 +1,23 @@
 #include "Lexique.hpp"
 
+/**
+ * @brief Construct a new Lexique object
+ *
+ */
 Lexique::Lexique(void)
 {
     this->lexique = {};
 };
 
 /**
- * @brief Add a word to the map, if it already exists increase its occurency
+ * @brief Add a word to the lexicon
  *
- * @param word the word to add
+ * @param word New word to add to the lexic.
+ * If the word already exists in the lexicon, increase its occurency.
  */
 void Lexique::addWord(std::string word)
 {
+    // If word exist inside the map
     if (this->lexique.contains(word))
     {
 
@@ -19,33 +25,29 @@ void Lexique::addWord(std::string word)
              iter != this->lexique.end();
              ++iter)
         {
+            // When it finds the word
             if (iter->first == word)
             {
+                // Increment the occurency value
                 iter->second++;
             }
         }
     }
     else
     {
+        // If it does not exist, insert it.
         this->lexique.insert({word, 1});
     }
 }
 
 /**
- * @brief
+ * @brief Counts the number of occurency of a word
  *
+ * @param word Word to count
+ * @return Number of occureny of the word
+ * @return -1 if word does not exist inside the lexicon
  */
-void Lexique::toString()
-{
-    for (std::map<std::string, int>::iterator iter = this->lexique.begin();
-         iter != this->lexique.end();
-         ++iter)
-    {
-        std::cout << "Mot:" << iter->first << " Occurence: " << iter->second << std::endl;
-    }
-}
-
-void Lexique::exists(std::string word)
+int Lexique::nbOfOccurency(std::string word)
 {
     if (this->lexique.contains(word))
     {
@@ -55,14 +57,11 @@ void Lexique::exists(std::string word)
         {
             if (iter->first == word)
             {
-                std::cout << "Le mot '" << iter->first << "' est présent " << iter->second << " fois" << std::endl;
+                return iter->second;
             }
         }
     }
-    else
-    {
-        std::cout << "Le mot '" << word << "' n'existe pas." << std::endl;
-    }
+    return -1;
 }
 
 /**
@@ -91,6 +90,11 @@ void Lexique::remove(std::string word)
     }
 }
 
+/**
+ * @brief Retrieve the length of the lexicon
+ *
+ * @return int
+ */
 int Lexique::length(void)
 {
     int length = 0;
@@ -105,7 +109,12 @@ int Lexique::length(void)
     return length;
 }
 
-std::string Lexique::getWords(void)
+/**
+ * @brief Get all the content of the lexicon without the occurency
+ *
+ * @return std::string
+ */
+std::string Lexique::getContent(void)
 {
     std::string content;
     for (std::map<std::string, int>::iterator iter = this->lexique.begin();
@@ -117,7 +126,19 @@ std::string Lexique::getWords(void)
     return content;
 }
 
+/**
+ * @brief Destroy the Lexique object
+ *
+ */
 Lexique::~Lexique() {}
+
+/**
+ * @brief Overload of << operand to output the lexicon to the terminal
+ *
+ * @param os Output stream
+ * @param lexique Lexique to display
+ * @return std::ostream&
+ */
 
 std::ostream &operator<<(std::ostream &os, const Lexique &lex)
 {
@@ -132,6 +153,12 @@ std::ostream &operator<<(std::ostream &os, const Lexique &lex)
     return os;
 }
 
+/**
+ * @brief Add the lexicon parameter to the caller
+ *
+ * @param other The other lexicon
+ * @return Lexique&
+ */
 Lexique &Lexique::operator+=(Lexique &other)
 {
     std::map<std::string, int> &current_lex = this->lexique;
@@ -165,6 +192,13 @@ Lexique &Lexique::operator+=(Lexique &other)
     return *this;
 }
 
+/**
+ * @brief Substract the paramteter lexicon to the caller
+ * It only keep the words from the caller that are not inside the other lexicon
+ *
+ * @param other The other lexicon
+ * @return Lexique&
+ */
 Lexique &Lexique::operator-=(Lexique &other)
 {
     std::map<std::string, int> &current_lex = this->lexique;
@@ -181,6 +215,11 @@ Lexique &Lexique::operator-=(Lexique &other)
     return *this;
 }
 
+/**
+ * @brief Get the Lexique object
+ *
+ * @return std::map<std::string, int>
+ */
 std::map<std::string, int> Lexique::getLexique(void) const
 {
     return this->lexique;
