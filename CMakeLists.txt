@@ -1,0 +1,15 @@
+
+cmake_minimum_required(VERSION 3.0)
+project(CPP_TP1_JAK_NAT)
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED YES)
+
+set(sources
+    ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
+    # ${CMAKE_CURRENT_SOURCE_DIR}/src/Lexique.cpp
+)
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
+
+add_executable(CPP_TP1_JAK_NAT ${sources})
