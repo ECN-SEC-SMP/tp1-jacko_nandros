@@ -1,5 +1,11 @@
 #include "Lexique.hpp"
 
+#include <cstring>
+#include <iostream>
+#include <cinttypes>
+
+#include "utilitaire.hpp"
+
 /**
  * @brief Construct a new Lexique object
  *
@@ -8,6 +14,29 @@ Lexique::Lexique(void)
 {
     this->lexique = {};
 };
+
+void Lexique::readBook(std::string book)
+{
+    util::remove_punctuation(book);
+    char* book_char = (char*)book.c_str();
+    char* tok;
+    std::string word;
+
+    tok = strtok(book_char, " \n");
+    while (tok != NULL)
+    {
+        word = std::string(tok);
+        util::trim_punctuation(word);
+        util::to_lower(word);
+        this->addWord(word);
+
+        // Get next token
+        tok = strtok(NULL, " \n\r");
+    }
+    
+
+    return;
+}
 
 /**
  * @brief Add a word to the lexicon
@@ -20,18 +49,7 @@ void Lexique::addWord(std::string word)
     // If word exist inside the map
     if (this->lexique.contains(word))
     {
-
-        for (std::map<std::string, int>::iterator iter = this->lexique.begin();
-             iter != this->lexique.end();
-             ++iter)
-        {
-            // When it finds the word
-            if (iter->first == word)
-            {
-                // Increment the occurency value
-                iter->second++;
-            }
-        }
+        this->lexique.at(word) += 1;
     }
     else
     {

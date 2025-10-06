@@ -27,6 +27,13 @@ public:
     ~Lexique(void);
 
     /**
+     * @brief Get all words from a book
+     * 
+     * @param book String of the book
+     */
+    void readBook(std::string book);
+
+    /**
      * @brief Get the Lexique object
      *
      * @return std::map<std::string, int>
