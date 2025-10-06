@@ -9,6 +9,16 @@ namespace util {
 // Retourne true en cas de succès, false sinon (ne fait PAS exit()).
 bool readFileIntoString(std::string_view path, std::string& content);
 
+/**
+ * @brief Write a String into file created at 'path'
+ * 
+ * @param path Path of the output file
+ * @param content String to write
+ * @return true Success
+ * @return false Error
+ */
+bool writeStringIntoFile(std::string path, std::string content);
+
 // Supprime toute la ponctuation (ASCII) dans la chaîne, en place.
 void remove_punctuation(std::string& word);
 

@@ -20,6 +20,30 @@ bool readFileIntoString(std::string_view path, std::string& content) {
     return true;
 }
 
+bool writeStringIntoFile(std::string path, std::string content) {
+    bool ret = true;
+
+    std::ofstream output_file(path, std::ofstream::out);
+    
+    if ((!output_file.bad()) && (output_file.is_open()))
+    {
+        output_file << content;
+    }
+    else
+    {
+        ret = false;
+    }
+
+    if (output_file.bad())
+    {
+        ret = false;
+    }
+
+    output_file.close();
+
+    return ret;
+}
+
 void remove_punctuation(std::string& word) {
     word.erase(std::remove_if(word.begin(), word.end(),
                [](unsigned char ch) {
