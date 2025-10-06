@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED YES)
 
 set(sources
     ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
-    # ${CMAKE_CURRENT_SOURCE_DIR}/src/Lexique.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/Lexique.cpp
 )
 
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/src)
