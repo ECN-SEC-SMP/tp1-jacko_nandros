@@ -10,8 +10,12 @@ class Lexique {
 
     public:
         Lexique(void);
+        ~Lexique(void);
         void addWord(std::string word);
         void toString(void);
+        void exists(std::string word);
+        void remove(std::string word);
+        int length(void);
 };
 
 #endif
