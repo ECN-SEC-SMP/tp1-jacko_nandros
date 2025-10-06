@@ -1,15 +1,44 @@
 #include <iostream>
 #include <string>
 #include <map>
+#include <assert.h>
 
 #include "main.h"
 #include "utilitaire.hpp"
+#include "Lexique.hpp"
 
 std::string lesMiserables;
 std::string notreDameDeParis;
 
+void test_ReadingWriting(void);
+
 int main(int argc, char const *argv[])
 {
+    bool ret;
+    
+    // Tests
+    test_ReadingWriting();
+
+    // Reading lesMiseables
+    std::cout << "===== Get lesMiserables" << "\n";
+    ret = util::readFileIntoString(std::string(PROJECT_PATH) + std::string(LES_MISERABLES_PATH), lesMiserables);
+    assert(ret);
+    
+    std::cout << "===== Create Lexique Object" << "\n";
+    Lexique lexique;
+    std::cout << "===== Lexique Read book" << "\n";
+    lexique.readBook(lesMiserables);
+
+    std::cout << "===== Print lexique" << "\n";
+    std::cout << "Length of Lexique : " << lexique.length() << "\n";
+
+    // std::cout << lexique.getContent() << "\n";
+    util::writeStringIntoFile(std::string(PROJECT_PATH) + std::string(LES_MISERABLES_LEXIQUE_PATH), lexique.getContent());
+
+    return 0;
+}
+
+void test_ReadingWriting(void) {
     bool ret;
 
     std::cout << "Project Path :" << PROJECT_PATH << "\n";
@@ -33,5 +62,5 @@ int main(int argc, char const *argv[])
     ret = util::writeStringIntoFile(std::string(PROJECT_PATH) + TEST_LEXIQUE_PATH, testWrite);
     std::cout << "Write Success : " << (ret ? "Success" : "Error") << "\n";
 
-    return 0;
+    return;
 }
