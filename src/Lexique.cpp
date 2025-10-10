@@ -18,8 +18,8 @@ Lexique::Lexique(void)
 void Lexique::readBook(std::string book)
 {
     util::remove_punctuation(book);
-    char* book_char = (char*)book.c_str();
-    char* tok;
+    char *book_char = (char *)book.c_str();
+    char *tok;
     std::string word;
 
     tok = strtok(book_char, " \n");
@@ -33,7 +33,6 @@ void Lexique::readBook(std::string book)
         // Get next token
         tok = strtok(NULL, " \n\r");
     }
-    
 
     return;
 }
@@ -139,7 +138,7 @@ std::string Lexique::getContent(void)
          iter != this->lexique.end();
          ++iter)
     {
-        content += iter->first + "\n";
+        content += iter->first + ": " + std::to_string(iter->second) + "\n";
     }
     return content;
 }
