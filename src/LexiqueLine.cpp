@@ -1,5 +1,12 @@
 #include "LexiqueLine.hpp"
 
+#include <cstring>
+#include <cstdint>
+#include <iostream>
+#include <sstream>
+
+#include "utilitaire.hpp"
+
 LexiqueLine::LexiqueLine() : Lexique()
 {
     this->lexiqueLine = {};
@@ -40,6 +47,38 @@ std::string LexiqueLine::getContent(void)
 
 void LexiqueLine::readBook(std::string book)
 {
+    util::remove_punctuation(book);
+    std::istringstream bookStream(book);
+    char *book_char = (char *)book.c_str();
+    char *tok;
+    char lineStr[2850];   // 300 est arbitraire, on considère qu'une ligne ne fait pas plus de 150 caractères
+    uint32_t line_count;
+    std::string word;
+
+    line_count = 0;
+    while (!bookStream.eof())
+    {
+        if (line_count >= 67320) { break; }
+        bookStream.getline(lineStr, 2850);
+        std::cout << "[" << line_count << "] length:" << std::string(lineStr).size() << " " << lineStr << "\n";
+
+        tok = strtok(lineStr, " \n");
+        while (tok != NULL)
+        {
+            std::cout << "\ttoken: " << tok << "\n";
+            word = std::string(tok);
+            util::trim_punctuation(word);
+            util::to_lower(word);
+
+            this->addWord(word, line_count);
+    
+            // Get next token
+            tok = strtok(NULL, " \n\r");
+        }
+        line_count++;
+    }
+    
+
 }
 
 std::map<std::string, std::vector<int> > LexiqueLine::getLexiqueLine(void) const
