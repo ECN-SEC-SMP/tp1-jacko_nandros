@@ -10,6 +10,7 @@ file(MAKE_DIRECTORY output) # Create directory for outputs
 set(sources
     ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/Lexique.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/LexiqueLine.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/src/utilitaire.cpp
 )
 

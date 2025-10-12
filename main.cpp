@@ -6,10 +6,12 @@
 #include "main.h"
 #include "utilitaire.hpp"
 #include "Lexique.hpp"
+#include "LexiqueLine.hpp"
 
 std::string lesMiserables;
 std::string notreDameDeParis;
 
+void test_Lexique(void);
 void test_ReadingWriting(void);
 void test_addWordLexique(void);
 void test_removeWordLexique(void);
@@ -19,36 +21,40 @@ void test_getContentLexique(void);
 void test_operatorOutLexique(void);
 void test_operatorAddLexique(void);
 void test_operatorSubLexique(void);
+
+void test_LexiqueLine(void);
+void test_addWordLexiqueLine(void);
+void test_removeWordLexiqueLine(void);
+void test_getContentLexiqueLine(void);
+void test_operatorOutLexiqueLine(void);
+void test_operatorAddLexiqueLine(void);
+void test_operatorSubLexiqueLine(void);
+
 int main(int argc, char const *argv[])
 {
+    // test_Lexique();
 
-    // test_addWordLexique();
-    // test_removeWordLexique();
-    // test_nbOfOccurencyLexique();
-    // test_lengthLexique();
-    // test_getContentLexique();
-    // test_operatorOutLexique();
-    // test_operatorAddLexique();
-    test_operatorSubLexique();
-    // bool ret;
+    // test_LexiqueLine();
 
-    // // Tests
-    // test_ReadingWriting();
+    bool ret;
 
-    // // Reading lesMiseables
-    // std::cout << "===== Get lesMiserables" << "\n";
-    // ret = util::readFileIntoString(std::string(PROJECT_PATH) + std::string(LES_MISERABLES_PATH), lesMiserables);
-    // assert(ret);
+    // Tests
+    test_ReadingWriting();
 
-    // std::cout << "===== Create Lexique Object" << "\n";
-    // Lexique lexique;
-    // std::cout << "===== Lexique Read book" << "\n";
-    // lexique.readBook(lesMiserables);
-    // std::cout << "===== Print lexique" << "\n";
-    // std::cout << "Length of Lexique : " << lexique.length() << "\n";
+    // Reading lesMiseables
+    std::cout << "===== Get lesMiserables" << "\n";
+    ret = util::readFileIntoString(std::string(PROJECT_PATH) + std::string(LES_MISERABLES_PATH), lesMiserables);
+    assert(ret);
 
-    // // std::cout << lexique.getContent() << "\n";
-    // util::writeStringIntoFile(std::string(PROJECT_PATH) + std::string(LES_MISERABLES_LEXIQUE_PATH), lexique.getContent());
+    std::cout << "===== Create Lexique Object" << "\n";
+    Lexique lexique;
+    std::cout << "===== Lexique Read book" << "\n";
+    lexique.readBook(lesMiserables);
+    std::cout << "===== Print lexique" << "\n";
+    std::cout << "Length of Lexique : " << lexique.length() << "\n";
+
+    // std::cout << lexique.getContent() << "\n";
+    util::writeStringIntoFile(std::string(PROJECT_PATH) + std::string(LES_MISERABLES_LEXIQUE_PATH), lexique.getContent());
 
     return 0;
 }
@@ -81,6 +87,17 @@ void test_ReadingWriting(void)
     return;
 }
 
+void test_Lexique(void)
+{
+    test_addWordLexique();
+    test_removeWordLexique();
+    test_nbOfOccurencyLexique();
+    test_lengthLexique();
+    test_getContentLexique();
+    test_operatorOutLexique();
+    test_operatorAddLexique();
+    test_operatorSubLexique();
+}
 void test_addWordLexique(void)
 {
 
@@ -117,7 +134,7 @@ void test_nbOfOccurencyLexique(void)
 
     assert(l1.nbOfOccurency("Mot_1") == 2);
     assert(l1.nbOfOccurency("Mot_2") == 1);
-    assert(l1.nbOfOccurency("Mot_3") == -1);
+    assert(l1.nbOfOccurency("Mot_3") == 0);
 }
 
 void test_lengthLexique(void)
@@ -179,4 +196,129 @@ void test_operatorSubLexique(void)
     l1 -= l2;
     assert(l1.getContent() == "Mot_1: 2\n");
 }
-    
+
+void test_LexiqueLine(void)
+{
+    test_addWordLexique();
+    test_removeWordLexiqueLine();
+    test_getContentLexiqueLine();
+    test_operatorOutLexiqueLine();
+    test_operatorAddLexiqueLine();
+    test_operatorSubLexiqueLine();
+
+    std::cout << "ca passe" << std::endl;
+}
+
+void test_addWordLexiqueLine(void)
+{
+    LexiqueLine l1 = LexiqueLine();
+    l1.addWord("Mot_1", 1);
+    l1.addWord("Mot_1", 2);
+    l1.addWord("Mot_2", 3);
+
+    std::map<std::string, std::vector<int> > lexMap = l1.getLexiqueLine();
+
+    assert(lexMap.contains("Mot_1") == true);
+    assert(lexMap.contains("Mot_2") == true);
+
+    assert(lexMap["Mot_1"].size() == 2);
+    assert(lexMap["Mot_2"].size() == 1);
+
+    assert(lexMap["Mot_1"][0] == 1);
+    assert(lexMap["Mot_1"][1] == 2);
+    assert(lexMap["Mot_2"][0] == 3);
+}
+
+void test_removeWordLexiqueLine(void)
+{
+    LexiqueLine l1 = LexiqueLine();
+
+    l1.addWord("Mot_1", 1);
+    l1.addWord("Mot_1", 2);
+    l1.addWord("Mot_2", 3);
+
+    std::map<std::string, std::vector<int> > lexMap = l1.getLexiqueLine();
+
+    l1.remove("Mot_1");
+
+    lexMap = l1.getLexiqueLine();
+
+    assert(!lexMap.contains("Mot_1"));
+    assert(lexMap.contains("Mot_2"));
+    assert(lexMap["Mot_2"].size() == 1);
+    assert(lexMap["Mot_2"][0] == 3);
+}
+
+void test_getContentLexiqueLine(void)
+{
+    LexiqueLine l1 = LexiqueLine();
+
+    l1.addWord("Mot_1", 1);
+    l1.addWord("Mot_1", 2);
+    l1.addWord("Mot_2", 3);
+
+    std::string content = l1.getContent();
+
+    std::cout << content;
+
+    assert(content.find("Mot_1 - [1, 2] - 2") != std::string::npos);
+    assert(content.find("Mot_2 - [3] - 1") != std::string::npos);
+}
+void test_operatorOutLexiqueLine(void)
+{
+    LexiqueLine l1;
+    LexiqueLine l2;
+
+    l1.addWord("Mot_1", 1);
+    l1.addWord("Mot_1", 2);
+    l1.addWord("Mot_2", 3);
+
+    std::cout << l1;
+    std::cout << l2;
+}
+
+void test_operatorAddLexiqueLine(void)
+{
+    LexiqueLine l1;
+    LexiqueLine l2;
+
+    l1.addWord("Mot_1", 1);
+
+    l2.addWord("Mot_1", 2);
+    l2.addWord("Mot_2", 3);
+
+    l1 += l2;
+
+    std::map<std::string, std::vector<int> > lexMap = l1.getLexiqueLine();
+
+    assert(lexMap.contains("Mot_1") == true);
+    assert(lexMap["Mot_1"].size() == 2);
+    assert(lexMap["Mot_1"][0] == 1);
+    assert(lexMap["Mot_1"][1] == 2);
+
+    assert(lexMap.contains("Mot_2") == true);
+    assert(lexMap["Mot_2"].size() == 1);
+    assert(lexMap["Mot_2"][0] == 3);
+}
+
+void test_operatorSubLexiqueLine(void)
+{
+    LexiqueLine l1;
+    LexiqueLine l2;
+
+    l1.addWord("Mot_1", 1);
+    l1.addWord("Mot_1", 2);
+    l1.addWord("Mot_2", 3);
+
+    l2.addWord("Mot_2", 3);
+
+    l1 -= l2;
+    std::map<std::string, std::vector<int> > lexMap = l1.getLexiqueLine();
+
+    assert(lexMap.contains("Mot_2") == false);
+
+    assert(lexMap.contains("Mot_1") == true);
+    assert(lexMap["Mot_1"].size() == 2);
+    assert(lexMap["Mot_1"][0] == 1);
+    assert(lexMap["Mot_1"][1] == 2);
+}

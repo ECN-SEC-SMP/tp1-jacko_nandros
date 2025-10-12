@@ -62,13 +62,13 @@ void Lexique::addWord(std::string word)
  *
  * @param word Word to count
  * @return Number of occureny of the word
- * @return -1 if word does not exist inside the lexicon
+ * @return 0 if word does not exist inside the lexicon
  */
-int Lexique::nbOfOccurency(std::string word)
+int Lexique::nbOfOccurency(std::string word) const
 {
     if (this->lexique.contains(word))
     {
-        for (std::map<std::string, int>::iterator iter = this->lexique.begin();
+        for (std::map<std::string, int>::const_iterator iter = this->lexique.begin();
              iter != this->lexique.end();
              ++iter)
         {
@@ -78,7 +78,7 @@ int Lexique::nbOfOccurency(std::string word)
             }
         }
     }
-    return -1;
+    return 0;
 }
 
 /**
@@ -100,10 +100,6 @@ void Lexique::remove(std::string word)
                 break;
             }
         }
-    }
-    else
-    {
-        std::cout << "Le mot '" << word << "' n'existe pas dans le lexique." << std::endl;
     }
 }
 

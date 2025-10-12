@@ -9,31 +9,65 @@ LexiqueLine::~LexiqueLine()
 {
 }
 
-std::map<std::string, vector<int, int> > LexiqueLine::getLexiqueLine(void) const
+std::string LexiqueLine::getContent(void)
+{
+    std::string content = "";
+    std::map<std::string, std::vector<int> > lexic = this->getLexiqueLine();
+
+    for (std::map<std::string, std::vector<int> >::iterator iter = lexic.begin();
+         iter != lexic.end();
+         ++iter)
+    {
+        std::string vecteur = "[";
+        int vecteurSize = static_cast<int>(iter->second.size());
+
+        for (int i = 0; i < vecteurSize; i++)
+        {
+            vecteur += std::to_string(iter->second[i]);
+            if (i == vecteurSize - 1)
+                vecteur += "]";
+            else
+                vecteur += ", ";
+        }
+
+        int occurence = this->Lexique::nbOfOccurency(iter->first);
+
+        content += iter->first + " - " + vecteur + " - " + std::to_string(occurence) + "\n";
+    }
+
+    return content;
+}
+
+void LexiqueLine::readBook(std::string book)
+{
+}
+
+std::map<std::string, std::vector<int> > LexiqueLine::getLexiqueLine(void) const
 {
     return this->lexiqueLine;
 }
 
-void LexiqueLine::addWord(std::string word, int nbLine) override
+void LexiqueLine::addWord(std::string word, int nbLine)
 {
+    Lexique::addWord(word);
     // If word exist inside the map
     if (this->lexiqueLine.contains(word))
     {
-        this->lexiqueLine.at(word).append(nbLine);
+        this->lexiqueLine.at(word).push_back(nbLine);
     }
     else
     {
         // If it does not exist, insert it.
-        this->lexiqueLine.insert({word, [nbLine]});
+        this->lexiqueLine.insert({word, {nbLine}});
     }
 }
 
-void LexiqueLine::remove(std::string word) override
+void LexiqueLine::remove(std::string word)
 {
     Lexique::remove(word);
     if (this->lexiqueLine.contains(word))
     {
-        for (std::map<std::string, int>::iterator iter = this->lexiqueLine.begin();
+        for (std::map<std::string, std::vector<int> >::iterator iter = this->lexiqueLine.begin();
              iter != this->lexiqueLine.end();
              ++iter)
         {
@@ -43,10 +77,6 @@ void LexiqueLine::remove(std::string word) override
                 break;
             }
         }
-    }
-    else
-    {
-        std::cout << "Le mot '" << word << "' n'existe pas dans le lexique." << std::endl;
     }
 }
 
@@ -60,12 +90,25 @@ void LexiqueLine::remove(std::string word) override
 
 std::ostream &operator<<(std::ostream &os, const LexiqueLine &lex)
 {
-    std::map<std::string, int> lexic = lex.getLexique();
-    for (std::map<std::string, int>::iterator iter = lexic.begin();
+
+    std::map<std::string, std::vector<int> > lexic = lex.getLexiqueLine();
+    for (std::map<std::string, std::vector<int> >::iterator iter = lexic.begin();
          iter != lexic.end();
          ++iter)
     {
-        os << iter->first << " : " << iter->second << std::endl;
+        std::string vecteur = "[";
+        int vecteurSize = iter->second.size();
+
+        for (int i = 0; i < vecteurSize; i++)
+        {
+            vecteur += std::to_string(iter->second[i]);
+            if (i == vecteurSize - 1)
+                vecteur += "]";
+            else
+                vecteur += ", ";
+        }
+
+        os << "Mot: " << iter->first << " - Lignes: " << vecteur << " - Occurence: " << lex.Lexique::nbOfOccurency(iter->first) << std::endl;
     }
 
     return os;
@@ -79,37 +122,33 @@ std::ostream &operator<<(std::ostream &os, const LexiqueLine &lex)
  */
 LexiqueLine &LexiqueLine::operator+=(LexiqueLine &other)
 {
+    Lexique::operator+=(other);
+
     std::map<std::string, std::vector<int> > &current_lex = this->lexiqueLine;
     std::map<std::string, std::vector<int> > other_lex = other.getLexiqueLine();
 
-    for (std::map<std::string, int>::iterator iter_other = other_lex.begin();
+    // Iterate over all words in the other LexiqueLine
+    for (std::map<std::string, std::vector<int> >::iterator iter_other = other_lex.begin();
          iter_other != other_lex.end();
          ++iter_other)
     {
+        const std::string &word = iter_other->first;
+        std::vector<int> &other_lines = iter_other->second;
 
-        // If word already in current_lex
-        if (current_lex.contains(iter_other->first))
+        // If word exists, append the new line numbers
+        if (current_lex.contains(word))
         {
-            for (std::map<std::string, std::vector<int>>::iterator iter_current = current_lex.begin();
-                 iter_current != current_lex.end();
-                 ++iter_current)
+            std::vector<int> &current_lines = current_lex[word];
+            for (int i = 0; i < other_lines.size(); i++)
             {
-                // If it finds the word
-                if (iter_current->first == iter_other->first)
-                {
-                    // Add the number of occurency
-                    for (int i = 0; i < iter_other->second.size(); i++) {
-                        
-                        for (int j = 0; iter_current->second.size(); j++) {
-                            if 
-                        }
-                    }
-                        // Break current_lex loop
-                        break;
-                }
+                current_lines.push_back(other_lines[i]);
             }
         }
-        current_lex.insert({iter_other->first, iter_other->second});
+        else
+        {
+            // If word does not exist, insert it with all line numbers
+            current_lex.insert({word, other_lines});
+        }
     }
 
     return *this;
@@ -124,21 +163,17 @@ LexiqueLine &LexiqueLine::operator+=(LexiqueLine &other)
  */
 LexiqueLine &LexiqueLine::operator-=(LexiqueLine &other)
 {
-    std::map<std::string, int> &current_lex = this->lexiqueLine;
-    std::map<std::string, int> other_lex = other.getLexiqueLine();
+    Lexique::operator-=(other);
 
-    for (std::map<std::string, int>::iterator iter_other = other_lex.begin();
+    std::map<std::string, std::vector<int> > &current_lex = this->lexiqueLine;
+    std::map<std::string, std::vector<int> > other_lex = other.getLexiqueLine();
+
+    for (std::map<std::string, std::vector<int> >::iterator iter_other = other_lex.begin();
          iter_other != other_lex.end();
          ++iter_other)
     {
-
         this->remove(iter_other->first);
     }
 
     return *this;
-}
-
-std::map<std::string, std::vector<int> > LexiqueLine::getLexiqueLine(void) const
-{
-    return this.lexiqueLine;
 }

@@ -20,7 +20,7 @@ public:
      *
      * @return std::map<std::string, int>
      */
-    std::map<std::string, vector<int, int> > getLexiqueLine(void) const;
+    std::map<std::string, std::vector<int> > getLexiqueLine(void) const;
 
     /**
      * @brief Add a word to the lexicon
@@ -29,7 +29,7 @@ public:
      * @param nbline Number of the line where the word was find.
      * If the word already exists in the lexicon, increase its occurency.
      */
-    void addWord(std::string word, int nbLine) override;
+    void addWord(std::string word, int nbLine);
 
     /**
      * @brief Remove a word from the lexicon if it exists
@@ -50,14 +50,7 @@ public:
      *
      * @return std::string
      */
-    std::string getContent(void);
-
-    /**
-     * @brief Retrieve the length of the lexicon
-     *
-     * @return int
-     */
-    int length(void);
+    std::string getContent(void) override;
 
     // Internal Operand //
 

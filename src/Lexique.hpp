@@ -56,7 +56,7 @@ public:
      * @return Number of occureny of the word
      * @return -1 if word does not exist inside the lexicon
      */
-    int nbOfOccurency(std::string word);
+    virtual int nbOfOccurency(std::string word) const;
 
     /**
      * @brief Remove a word from the lexicon if it exists
