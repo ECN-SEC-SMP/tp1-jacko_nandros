@@ -3,10 +3,11 @@
 
 #include <iostream>
 #include <map>
+#include <string>
 class Lexique
 {
 
-private:
+protected:
     /**
      * @brief Contains as key the word and as value the occurency
      *
@@ -24,14 +25,14 @@ public:
      * @brief Destroy the Lexique object
      *
      */
-    ~Lexique(void);
+    virtual ~Lexique(void);
 
     /**
      * @brief Get all words from a book
      * 
      * @param book String of the book
      */
-    void readBook(std::string book);
+    virtual void readBook(std::string book);
 
     /**
      * @brief Get the Lexique object
@@ -46,7 +47,7 @@ public:
      * @param word New word to add to the lexic.
      * If the word already exists in the lexicon, increase its occurency.
      */
-    void addWord(std::string word);
+    virtual void addWord(std::string word);
 
     /**
      * @brief Counts the number of occurency of a word
@@ -62,21 +63,21 @@ public:
      *
      * @param word Word to remove
      */
-    void remove(std::string word);
+    virtual void remove(std::string word);
 
     /**
      * @brief Get all the content of the lexicon without the occurency
      *
      * @return std::string
      */
-    std::string getContent(void);
+    virtual std::string getContent(void);
 
     /**
      * @brief Retrieve the length of the lexicon
      *
      * @return int
      */
-    int length(void);
+    virtual int length(void);
 
     // Internal Operand //
 

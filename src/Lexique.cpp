@@ -122,7 +122,6 @@ int Lexique::length(void)
         length++;
     }
 
-    std::cout << "Le lexique a une taille de " << length << std::endl;
     return length;
 }
 
