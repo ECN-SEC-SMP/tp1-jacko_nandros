@@ -56,6 +56,16 @@ int main(int argc, char const *argv[])
     // std::cout << lexique.getContent() << "\n";
     util::writeStringIntoFile(std::string(PROJECT_PATH) + std::string(LES_MISERABLES_LEXIQUE_PATH), lexique.getContent());
 
+    std::cout << "==========" << "\n";
+    std::cout << "===== Lexique Line" << "\n";
+    LexiqueLine lexiqueLine;
+    std::cout << "===== LexiqueLine Read book" << "\n";
+    lexiqueLine.readBook(lesMiserables);
+    std::cout << "===== Print lexiqueLine" << "\n";
+    std::cout << "Length of LexiqueLine : " << lexiqueLine.length() << "\n";
+    util::writeStringIntoFile(std::string(PROJECT_PATH) + std::string(LES_MISERABLES_LEXIQUE_PATH) + "Line", lexiqueLine.getContent());
+
+
     return 0;
 }
 
