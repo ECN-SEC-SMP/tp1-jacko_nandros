@@ -35,7 +35,7 @@ int main(int argc, char const *argv[])
     test_Lexique();
 
     test_LexiqueLine();
-    return 0;
+
     bool ret;
 
     // Tests
