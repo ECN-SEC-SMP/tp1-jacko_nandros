@@ -18,8 +18,40 @@ Run
 ./build/CPP_TP1_JAK_NAT
 ```
 
-### Lecutre par lignes
+## UML
 
-Le buffer doit pouvoir acceuillir la ligne entière. Il doit donc avoir une taille maximale qui ocrrespond à la ligne la plus grande du fichier.  
-Ici le buffer doit faire 2850 environ.
-![alt text](image.png)
+```mermaid
+---
+title: CPP TP1 Class Diagram
+---
+classDiagram
+    Lexique <|-- LexiqueLine
+
+    class Lexique{
+        - map<str, int> lexique
+
+        + map<str, int> getLexiaue()
+        + readBook(str)
+        + addWord(str)
+        + nbOfOccurency(str) const
+        + remove(str)
+        + str getContent()
+        + int length()
+        + &operator+=(Lexique)
+        + &operator-=(Lexique)
+        + &operator<<(ostream)
+    }
+    class LexiqueLine{
+        - map<str, vecotr<int>> lexique
+
+        + map<str, vecotr<int>> getLexiqueLine() const
+        + readBook(str) override
+        + addWord(str, int)
+        + remove(str) override
+        + str getContent() override
+        + &operator+=(Lexique)
+        + &operator-=(Lexique)
+        + &operator<<(ostream, LexiqueLine)
+    }
+```
+
