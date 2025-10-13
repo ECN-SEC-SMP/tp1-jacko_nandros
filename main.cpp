@@ -32,10 +32,10 @@ void test_operatorSubLexiqueLine(void);
 
 int main(int argc, char const *argv[])
 {
-    // test_Lexique();
+    test_Lexique();
 
-    // test_LexiqueLine();
-
+    test_LexiqueLine();
+    return 0;
     bool ret;
 
     // Tests
@@ -107,6 +107,8 @@ void test_Lexique(void)
     test_operatorOutLexique();
     test_operatorAddLexique();
     test_operatorSubLexique();
+
+    std::cout << "Classe Lexique:\t OK" << std::endl;
 }
 void test_addWordLexique(void)
 {
@@ -216,7 +218,7 @@ void test_LexiqueLine(void)
     test_operatorAddLexiqueLine();
     test_operatorSubLexiqueLine();
 
-    std::cout << "ca passe" << std::endl;
+    std::cout << "Classe LexiqueLine:\t OK" << std::endl;
 }
 
 void test_addWordLexiqueLine(void)

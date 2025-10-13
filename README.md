@@ -42,9 +42,9 @@ classDiagram
         + &operator<<(ostream)
     }
     class LexiqueLine{
-        - map<str, vecotr<int>> lexique
+        - map<str, vector<int>> lexique
 
-        + map<str, vecotr<int>> getLexiqueLine() const
+        + map<str, vector<int>> getLexiqueLine() const
         + readBook(str) override
         + addWord(str, int)
         + remove(str) override
